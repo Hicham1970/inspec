@@ -1,0 +1,46 @@
+/* src/index.css */
+
+/* 1️⃣ Importation principale de Tailwind  */
+@tailwind base;     /* Réinitialise & définit les styles de base (reset) */
+@tailwind components; /* Styles de composants (ex. btn, cards, etc.) */
+@tailwind utilities;   /* Toutes les classes utilitaires (m, p, bg, ...) */
+
+/* 2️⃣ Variables CSS personnalisées (facultatif) */
+:root {
+  --primary: #0066ff;   /* Couleur principale (équivaut à MUI.primary) */
+  --secondary: #ff4081;  /* Couleur secondaire */
+  --bg: #f0f4f8;        /* Couleur de fond générale */
+}
+
+/* 3️⃣ Style global / body */
+body {
+  font-family: 'Roboto', sans-serif; /* Téléchargez votre police dans index.html */
+  background-color: var(--bg);
+  color: #222;
+  line-height: 1.6;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* 4️⃣ Ajout d’une classe custom simple (ex. pour les boutons de ton design)  */
+.btn-primary {
+  @apply bg-primary text-white px-6 py-2 rounded shadow hover:bg-primary/80 transition-colors;
+}
+
+.btn-outline-secondary {
+  @apply border border-secondary text-secondary px-6 py-2 rounded hover:bg-secondary/10 transition-all;
+}
+
+/* 5️⃣ Styles supplémentaires ou overrides de Tailwind  (facultatif) */
+@layer utilities {
+  /* Exemple : texte centré + responsive */
+  .text-center-sm {
+    @apply text-center;
+  }
+  @screen lg {
+    .text-center-sm {
+      @apply text-left;
+    }
+  }
+}
