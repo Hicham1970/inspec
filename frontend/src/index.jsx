@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { I18nextProvider } from 'react-i18next';
 
-import App from './App';
+import App from './app';
 import i18n from './i18n';
 import './index.css';
 
