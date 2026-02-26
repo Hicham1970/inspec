@@ -289,6 +289,7 @@ export default function Contact() {
                           value={formData.vessel_name}
                           onChange={handleChange}
                           variant="outlined"
+                          sx={{ my: 2 }}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
@@ -299,6 +300,7 @@ export default function Contact() {
                           value={formData.port}
                           onChange={handleChange}
                           variant="outlined"
+                          sx={{ my: 2 }}
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
@@ -311,6 +313,7 @@ export default function Contact() {
                           onChange={handleChange}
                           variant="outlined"
                           InputLabelProps={{ shrink: true }}
+                          sx={{ my: 2 }}
                         />
                       </Grid>
                     </Collapse>
@@ -407,18 +410,55 @@ export default function Contact() {
                   </Paper>
                 ))}
 
-                {/* Map placeholder */}
+                {/* Interactive Google Map */}
+                <Paper sx={{ 
+                  borderRadius: 3,
+                  overflow: 'hidden',
+                  height: 350
+                }}>
+                  <iframe
+                    title="Inspectis Location"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.456789012345!2d-7.457244713747139!3d33.62998234568668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDM3JzQ4LjYiTiA3wrAyNyc0NC43xJU!5e0!3m2!1sfr!2sma!4v1234567890`}
+                  />
+                </Paper>
+                
+                {/* Address Card */}
                 <Paper sx={{ 
                   p: 3, 
                   borderRadius: 3,
-                  bgcolor: '#f5f5f5',
-                  textAlign: 'center',
-                  py: 6
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 2,
+                  transition: '0.3s',
+                  '&:hover': {
+                    transform: 'translateX(5px)',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                  }
                 }}>
-                  <MapPin size={48} sx={{ color: '#43a047', mb: 2 }} />
-                  <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                    {t('contact.map_coming')}
-                  </Typography>
+                  <Box sx={{ 
+                    p: 1.5, 
+                    borderRadius: 2, 
+                    bgcolor: '#e8f5e9',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <MapPin size={24} sx={{ color: '#43a047' }} />
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#002a54' }}>
+                      {t('contact.info_address')}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      Casablanca, Maroc
+                    </Typography>
+                  </Box>
                 </Paper>
               </Stack>
             </Grid>
