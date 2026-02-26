@@ -1,4 +1,6 @@
+# Robots.txt for INSPEC
 # https://www.robotstxt.org/robotstxt.html
+
 User-agent: *
 Allow: /
 
@@ -8,7 +10,10 @@ Sitemap: https://inspec.ma/sitemap.xml
 # Disallow admin/private areas
 Disallow: /api/
 Disallow: /admin/
-Disallow: /*?*
+Disallow: /private/
 
-# Crawl-delay (optional)
+# Crawl-delay for polite crawling
 Crawl-delay: 1
+
+# Host directive (for Google)
+Host: inspec.ma

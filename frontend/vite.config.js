@@ -4,10 +4,10 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
     plugins: [react()],
-    root: '.', // dossier racine
-    publicDir:'public', // Dossier static
-    base: '/', // Base path for the application
-    server: { 
+    root: '.',
+    publicDir: 'public',
+    base: '/',
+    server: {
         port: 5173,
         proxy: {
             '/api': {
@@ -16,5 +16,18 @@ export default defineConfig({
             }
         }
     },
-    
+    build: {
+        outDir: 'dist',
+        sourcemap: false,
+        minify: 'terser',
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ['react', 'react-dom', 'react-router-dom'],
+                    mui: ['@mui/material', '@emotion/react', '@emotion/styled'],
+                    googleMaps: ['@react-google-maps/api'],
+                },
+            },
+        },
+    },
 });
