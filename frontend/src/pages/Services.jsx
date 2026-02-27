@@ -6,7 +6,8 @@ import {
   Typography, 
   Grid, 
   Stack,
-  Paper
+  Paper,
+  Button
 } from '@mui/material';
 import { 
   CheckCircle,
@@ -17,6 +18,7 @@ import {
   Thermometer,
   Building2
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
 
 /**
@@ -266,24 +268,26 @@ export default function Services() {
               {t('services.cta_subtitle')}
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
-              <Paper sx={{ 
-                component: 'a', 
-                href: '/contact',
-                px: 4, 
-                py: 1.5, 
-                borderRadius: 2,
-                bgcolor: '#43a047',
-                color: 'white',
-                fontWeight: 700,
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 1,
-                '&:hover': { bgcolor: '#388e3c' }
-              }}>
+              <Button 
+                component={Link}
+                to="/contact"
+                sx={{ 
+                  px: 4, 
+                  py: 1.5, 
+                  borderRadius: 2,
+                  bgcolor: '#43a047',
+                  color: 'white',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  '&:hover': { bgcolor: '#388e3c' }
+                }}
+              >
                 {t('services.cta_button')}
                 <Anchor size={20} />
-              </Paper>
+              </Button>
             </Stack>
           </Container>
         </Box>
