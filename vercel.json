@@ -2,10 +2,6 @@
   "version": 2.0,
   "builds": [
     {
-      "src": "api/*.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
@@ -13,6 +9,11 @@
       }
     }
   ],
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
