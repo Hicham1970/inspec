@@ -14,13 +14,23 @@ import {
 import { Calendar, User, ArrowLeft, Facebook, Linkedin, Twitter } from 'lucide-react';
 import Seo from '../components/common/Seo';
 import { articles, getArticleBySlug } from '../data/articles';
+import { useThemeMode, THEMES } from '../ThemeContext';
 
 /**
  * Page BlogPost - Détail d'un article du blog
  */
 export default function BlogPost() {
   const { slug } = useParams();
+  const { mode } = useThemeMode();
+  const isDark = mode === THEMES.DARK;
   const article = getArticleBySlug(slug);
+
+  // Theme-aware colors
+  const titleColor = isDark ? '#ffffff' : '#002a54';
+  const sectionBg = isDark ? '#121212' : '#ffffff';
+  const textColor = isDark ? '#b0b0b0' : 'text.secondary';
+  const borderColor = isDark ? '#333' : '#e0e0e0';
+  const cardBg = isDark ? '#2a2a2a' : '#ffffff';
 
   // Si l'article n'existe pas, afficher un message
   if (!article) {
@@ -71,7 +81,9 @@ export default function BlogPost() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'linear-gradient(to bottom, rgba(0,42,84,0.3), rgba(0,42,84,0.8))'
+          background: isDark 
+            ? 'linear-gradient(to bottom, rgba(26,26,46,0.5), rgba(26,26,46,0.9))'
+            : 'linear-gradient(to bottom, rgba(0,42,84,0.3), rgba(0,42,84,0.8))'
         }
       }}>
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, height: '100%', pt: { xs: 12, md: 16 } }}>
@@ -93,7 +105,8 @@ export default function BlogPost() {
             color: 'white', 
             fontWeight: 800, 
             maxWidth: 800,
-            fontSize: { xs: '1.8rem', md: '2.5rem' }
+            fontSize: { xs: '1.8rem', md: '2.5rem' },
+            textShadow: isDark ? '0 2px 10px rgba(0,0,0,0.5)' : 'none'
           }}>
             {article.title}
           </Typography>
@@ -101,7 +114,7 @@ export default function BlogPost() {
       </Box>
 
       {/* Article Content */}
-      <Box sx={{ py: { xs: 6, md: 10 } }}>
+      <Box sx={{ py: { xs: 6, md: 10 }, bgcolor: sectionBg }}>
         <Container maxWidth="lg">
           <Grid container spacing={6}>
             {/* Main Content */}
@@ -109,34 +122,48 @@ export default function BlogPost() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 4, flexWrap: 'wrap' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <User size={18} sx={{ color: '#43a047' }} />
-                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: isDark ? '#ffffff' : '#002a54' }}>
                     {article.author}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Calendar size={18} sx={{ color: '#43a047' }} />
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ color: textColor }}>
                     {article.date}
                   </Typography>
                 </Box>
               </Box>
 
-              <Divider sx={{ mb: 4 }} />
+              <Divider sx={{ mb: 4, borderColor: borderColor }} />
 
               <Box 
                 sx={{ 
-                  '& p': { mb: 3, lineHeight: 1.8, color: 'text.secondary' },
-                  '& h2': { color: '#002a54', fontWeight: 700, mt: 4, mb: 2 },
+                  '& p': { mb: 3, lineHeight: 1.8, color: textColor },
+                  '& h2': { 
+                    color: titleColor, 
+                    fontWeight: 700, 
+                    mt: 4, 
+                    mb: 2,
+                    textShadow: isDark ? '0 0 20px rgba(255,255,255,0.1)' : 'none'
+                  },
+                  '& h3': { 
+                    color: titleColor, 
+                    fontWeight: 700, 
+                    mt: 3, 
+                    mb: 2,
+                    textShadow: isDark ? '0 0 20px rgba(255,255,255,0.1)' : 'none'
+                  },
                   '& ul': { pl: 3, mb: 3 },
-                  '& li': { mb: 1, lineHeight: 1.8, color: 'text.secondary' },
-                  '& strong': { color: '#002a54' }
+                  '& li': { mb: 1, lineHeight: 1.8, color: textColor },
+                  '& strong': { color: isDark ? '#ffffff' : '#002a54' },
+                  '& a': { color: '#43a047' }
                 }}
                 dangerouslySetInnerHTML={{ __html: article.content }}
               />
 
               {/* Share */}
-              <Box sx={{ mt: 6, pt: 4, borderTop: '1px solid #e0e0e0' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
+              <Box sx={{ mt: 6, pt: 4, borderTop: `1px solid ${borderColor}` }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: titleColor }}>
                   Partager cet article
                 </Typography>
                 <Stack direction="row" spacing={2}>
@@ -144,6 +171,7 @@ export default function BlogPost() {
                     p: 1.5, 
                     borderRadius: 2, 
                     cursor: 'pointer',
+                    bgcolor: cardBg,
                     '&:hover': { bgcolor: '#e8f5e9' }
                   }}>
                     <Facebook size={20} sx={{ color: '#1877f2' }} />
@@ -152,6 +180,7 @@ export default function BlogPost() {
                     p: 1.5, 
                     borderRadius: 2, 
                     cursor: 'pointer',
+                    bgcolor: cardBg,
                     '&:hover': { bgcolor: '#e8f5e9' }
                   }}>
                     <Linkedin size={20} sx={{ color: '#0a66c2' }} />
@@ -160,6 +189,7 @@ export default function BlogPost() {
                     p: 1.5, 
                     borderRadius: 2, 
                     cursor: 'pointer',
+                    bgcolor: cardBg,
                     '&:hover': { bgcolor: '#e8f5e9' }
                   }}>
                     <Twitter size={20} sx={{ color: '#1da1f2' }} />
@@ -172,7 +202,7 @@ export default function BlogPost() {
             <Grid item xs={12} md={4}>
               <Box sx={{ position: 'sticky', top: 100 }}>
                 {/* Related Articles */}
-                <Typography variant="h6" sx={{ fontWeight: 700, mb: 3, color: '#002a54' }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 3, color: titleColor }}>
                   Articles similaires
                 </Typography>
                 <Stack spacing={3}>
@@ -186,6 +216,7 @@ export default function BlogPost() {
                           borderRadius: 2,
                           cursor: 'pointer',
                           transition: '0.3s',
+                          bgcolor: cardBg,
                           '&:hover': { 
                             transform: 'translateX(5px)',
                             boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
@@ -200,7 +231,7 @@ export default function BlogPost() {
                           flexShrink: 0
                         }} />
                         <Box>
-                          <Typography variant="body2" sx={{ fontWeight: 600, lineHeight: 1.3, color: '#002a54' }}>
+                          <Typography variant="body2" sx={{ fontWeight: 600, lineHeight: 1.3, color: titleColor }}>
                             {related.title}
                           </Typography>
                         </Box>
@@ -214,7 +245,9 @@ export default function BlogPost() {
                   p: 4, 
                   mt: 4,
                   borderRadius: 3,
-                  background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+                  background: isDark 
+                    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+                    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
                   color: 'white'
                 }}>
                   <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>

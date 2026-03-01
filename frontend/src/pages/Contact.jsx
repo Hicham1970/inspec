@@ -20,12 +20,16 @@ import {
 } from '@mui/material';
 import { Mail, Phone, MapPin, Clock, Send, Loader2, FileText, Anchor } from 'lucide-react';
 import Seo from '../components/common/Seo';
+import { useThemeMode, THEMES } from '../ThemeContext';
 
 /**
  * Page Contact - Formulaire de contact et demandes de devis
  */
 export default function Contact() {
   const { t } = useTranslation();
+  const { mode } = useThemeMode();
+  const isDark = mode === THEMES.DARK;
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,6 +46,15 @@ export default function Contact() {
   const [loading, setLoading] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [errors, setErrors] = useState({});
+
+  // Theme-aware colors
+  const titleColor = isDark ? '#ffffff' : '#002a54';
+  const sectionBg = isDark ? '#121212' : '#ffffff';
+  const textColor = isDark ? '#b0b0b0' : 'text.secondary';
+  const cardBg = isDark ? '#2a2a2a' : '#ffffff';
+  const heroBg = isDark 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
 
   const serviceTypes = [
     { value: 'draft_survey', label: t('contact.service_draft_survey') },
@@ -119,9 +132,9 @@ export default function Contact() {
   };
 
   const contactInfo = [
-    { icon: MapPin, title: t('contact.info_address'), content: 'Casablanca, Maroc' },
+    { icon: MapPin, title: t('contact.info_address'), content: '143 Marina Shopping Center Casablanca, Maroc' },
     { icon: Phone, title: t('contact.info_phone'), content: '+212 522 99 23 56' },
-    { icon: Mail, title: t('contact.info_email'), content: 'contact@inspectis.ma' },
+    { icon: Mail, title: t('contact.info_email'), content: 'contact@inspec.ma' },
     { icon: Clock, title: t('contact.info_hours'), content: 'Lun - Ven: 8h00 - 18h00' }
   ];
 
@@ -137,7 +150,7 @@ export default function Contact() {
       {/* Hero Section */}
       <Box sx={{ 
         position: 'relative',
-        background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+        background: heroBg,
         color: 'white',
         py: { xs: 8, md: 12 },
         overflow: 'hidden'
@@ -165,16 +178,16 @@ export default function Contact() {
       </Box>
 
       {/* Contact Content */}
-      <Box sx={{ py: { xs: 8, md: 12 } }}>
+      <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: sectionBg }}>
         <Container maxWidth="lg">
           <Grid container spacing={6}>
             {/* Contact Form */}
             <Grid item xs={12} md={7}>
-              <Paper sx={{ p: { xs: 3, md: 5 }, borderRadius: 3 }}>
-                <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: '#002a54' }}>
+              <Paper sx={{ p: { xs: 3, md: 5 }, borderRadius: 3, bgcolor: cardBg }}>
+                <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: titleColor }}>
                   {t('contact.form_title')}
                 </Typography>
-                <Typography variant="body1" sx={{ mb: 4, color: 'text.secondary' }}>
+                <Typography variant="body1" sx={{ mb: 4, color: textColor }}>
                   {t('contact.form_subtitle')}
                 </Typography>
 
@@ -255,7 +268,7 @@ export default function Contact() {
                     {/* Champs pour demande de devis */}
                     <Collapse in={formData.type === 'quotation'} style={{ width: '100%' }}>
                       <Grid item xs={12}>
-                        <Divider sx={{ my: 2 }}>
+                        <Divider sx={{ my: 2, borderColor: isDark ? '#444' : '#e0e0e0' }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: '#43a047' }}>
                             <Anchor size={20} />
                             <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
@@ -383,6 +396,7 @@ export default function Contact() {
                       alignItems: 'flex-start',
                       gap: 2,
                       transition: '0.3s',
+                      bgcolor: cardBg,
                       '&:hover': {
                         transform: 'translateX(5px)',
                         boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
@@ -392,7 +406,7 @@ export default function Contact() {
                     <Box sx={{ 
                       p: 1.5, 
                       borderRadius: 2, 
-                      bgcolor: '#e8f5e9',
+                      bgcolor: isDark ? '#1a3a1a' : '#e8f5e9',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center'
@@ -400,65 +414,32 @@ export default function Contact() {
                       <info.icon size={24} sx={{ color: '#43a047' }} />
                     </Box>
                     <Box>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#002a54' }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: titleColor }}>
                         {info.title}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      <Typography variant="body2" sx={{ color: textColor }}>
                         {info.content}
                       </Typography>
                     </Box>
                   </Paper>
                 ))}
 
-                {/* Interactive Google Map */}
+                {/* Interactive Google Map - Marina Shopping Center */}
                 <Paper sx={{ 
                   borderRadius: 3,
                   overflow: 'hidden',
                   height: 350
                 }}>
                   <iframe
-                    title="Inspectis Location"
+                    title="Localisation inspec - Marina Shopping Center"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
                     loading="lazy"
                     allowFullScreen
                     referrerPolicy="no-referrer-when-downgrade"
-                    src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.456789012345!2d-7.457244713747139!3d33.62998234568668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDM3JzQ4LjYiTiA3wrAyNyc0NC43xJU!5e0!3m2!1sfr!2sma!4v1234567890`}
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3304.3!2d-7.6317!3d33.6083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d3a5c2a0c4b5%3A0x4c3c3c3c3c3c3c3c!2sMarina+Shopping+Center!5e0!3m2!1sfr!2sma!4v1635957842000!5m2!1sfr!2sma"
                   />
-                </Paper>
-                
-                {/* Address Card */}
-                <Paper sx={{ 
-                  p: 3, 
-                  borderRadius: 3,
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: 2,
-                  transition: '0.3s',
-                  '&:hover': {
-                    transform: 'translateX(5px)',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-                  }
-                }}>
-                  <Box sx={{ 
-                    p: 1.5, 
-                    borderRadius: 2, 
-                    bgcolor: '#e8f5e9',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <MapPin size={24} sx={{ color: '#43a047' }} />
-                  </Box>
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#002a54' }}>
-                      {t('contact.info_address')}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      Casablanca, Maroc
-                    </Typography>
-                  </Box>
                 </Paper>
               </Stack>
             </Grid>

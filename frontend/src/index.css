@@ -3,13 +3,26 @@
 /* 1️⃣ Importation principale de Tailwind  */
 @tailwind base;     /* Réinitialise & définit les styles de base (reset) */
 @tailwind components; /* Styles de composants (ex. btn, cards, etc.) */
-@tailwind utilities;   /* Toutes les classes utilitaires (m, p, bg, ...) */
 
-/* 2️⃣ Variables CSS personnalisées (facultatif) */
+@tailwind utilities;   /* Toutes les classes utilitaires (m, p, bg, ...) */
+/* 2️⃣ Variables CSS personnalisées - Light Theme (default) */
 :root {
-  --primary: #0066ff;   /* Couleur principale (équivaut à MUI.primary) */
-  --secondary: #ff4081;  /* Couleur secondaire */
-  --bg: #f0f4f8;        /* Couleur de fond générale */
+  --primary: #002a54;   /* Couleur principale */
+  --secondary: #43a047;  /* Couleur secondaire */
+  --bg: #f8f9fa;         /* Couleur de fond générale */
+  --bg-paper: #ffffff;   /* Couleur de fond des cartes */
+  --text-primary: #002a54;   /* Couleur du texte principal */
+  --text-secondary: #555555;  /* Couleur du texte secondaire */
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+  --primary: #1e88e5;
+  --secondary: #66bb6a;
+  --bg: #121212;
+  --bg-paper: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
 }
 
 /* 3️⃣ Style global / body */

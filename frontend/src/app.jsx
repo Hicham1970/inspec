@@ -1,24 +1,39 @@
 import React, { useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { arSA, frFR, enUS } from '@mui/material/locale';
+import { arSA, frFR } from '@mui/material/locale';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import AppRouter from './routes/AppRouter';
 import { useTranslation } from 'react-i18next';
+import { ThemeModeProvider, useThemeMode, THEMES } from './ThemeContext';
 
 // Centralized theme configuration
-const getTheme = (direction = 'ltr') => {
-  const locales = { rtl: arSA, ltr: frFR };
-  
+const getTheme = (direction = 'ltr', mode = THEMES.LIGHT) => {
+  // Light theme palette
+  const lightPalette = {
+    primary: { main: '#002a54' },
+    secondary: { main: '#43a047' },
+    background: { default: '#f8f9fa', paper: '#ffffff' },
+    text: { primary: '#002a54', secondary: '#555555' },
+  };
+
+  // Dark theme palette
+  const darkPalette = {
+    primary: { main: '#1e88e5' },
+    secondary: { main: '#66bb6a' },
+    background: { default: '#121212', paper: '#1e1e1e' },
+    text: { primary: '#ffffff', secondary: '#b0b0b0' },
+  };
+
+  const palette = mode === THEMES.DARK ? darkPalette : lightPalette;
+
   return createTheme(
     {
       direction,
       palette: {
-        primary: { main: '#002a54' },
-        secondary: { main: '#43a047' },
-        background: { default: '#f8f9fa' },
-        text: { primary: '#002a54' }
+        ...palette,
+        mode,
       },
       typography: {
         fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
@@ -55,20 +70,32 @@ const getTheme = (direction = 'ltr') => {
             },
           },
         },
+        // Dark mode specific overrides
+        ...(mode === THEMES.DARK && {
+          MuiAppBar: {
+            styleOverrides: {
+              root: {
+                backgroundImage: 'none',
+              },
+            },
+          },
+        }),
       },
     },
     direction === 'rtl' ? arSA : frFR
   );
 };
 
-export default function App() {
+// Inner component that uses theme context
+function AppContent() {
   const { i18n } = useTranslation();
-  
+  const { mode } = useThemeMode();
+
   // Memoize theme to prevent unnecessary re-renders
   const theme = useMemo(() => {
     const direction = i18n.language === 'ar' ? 'rtl' : 'ltr';
-    return getTheme(direction);
-  }, [i18n.language]);
+    return getTheme(direction, mode);
+  }, [i18n.language, mode]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -77,5 +104,14 @@ export default function App() {
       <AppRouter />
       <Footer />
     </ThemeProvider>
+  );
+}
+
+// Main App component with providers
+export default function App() {
+  return (
+    <ThemeModeProvider>
+      <AppContent />
+    </ThemeModeProvider>
   );
 }

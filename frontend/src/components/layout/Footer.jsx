@@ -9,13 +9,14 @@ import {
   Divider, 
   TextField, 
   Button,
-  Paper,
   Alert,
-  Snackbar
+  Snackbar,
+  useTheme
 } from '@mui/material';
-import { Phone, Mail, Linkedin, Facebook, MapPin, Loader2 } from 'lucide-react';
+import { Phone, Mail, Linkedin, Facebook, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { useThemeMode, THEMES } from '../../ThemeContext';
 
 /**
  * Composant Footer pour inspec
@@ -23,6 +24,8 @@ import { Link } from 'react-router-dom';
  */
 const Footer = () => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const { mode } = useThemeMode();
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [newsletterMessage, setNewsletterMessage] = useState({ type: '', text: '' });
@@ -58,7 +61,6 @@ const Footer = () => {
       });
 
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(data.error || 'Erreur lors de l\'inscription');
       }
@@ -75,10 +77,10 @@ const Footer = () => {
   };
 
   const expertises = [
-    { name: 'Électricité', path: '/services#electricity' },
-    { name: 'Levage', path: '/services#lifting' },
-    { name: 'Incendie', path: '/services#fire' },
-    { name: 'Pression', path: '/services#pressure' },
+    { name: 'Draft Survey', path: '/services#draft-survey' },
+    { name: 'On/Offhire', path: '/services#on-offhire' },
+    { name: 'Under Keel', path: '/services#under-keel' },
+    { name: 'Cargo Survey', path: '/services#cargo' },
   ];
 
   const agencies = [
@@ -87,13 +89,18 @@ const Footer = () => {
     { name: 'Agadir', address: 'Boulevard Hassan II' },
   ];
 
+  // Theme-aware colors
+  const bgColor = mode === THEMES.DARK ? '#1a1a2e' : '#002a54';
+  const textColor = mode === THEMES.DARK ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.7)';
+  const hoverColor = mode === THEMES.DARK ? '#2a2a4e' : 'rgba(255,255,255,0.1)';
+
   return (
-    <Box component="footer" sx={{ bgcolor: '#002a54', color: 'rgba(255,255,255,0.7)', pt: 8, pb: 4, mt: 'auto' }}>
+    <Box component="footer" sx={{ bgcolor: bgColor, color: textColor, pt: 8, pb: 4, mt: 'auto' }}>
       <Container maxWidth="lg">
         <Grid container spacing={5}>
           {/* Section Logo et Description */}
           <Grid item xs={12} md={4}>
-            <Typography variant="h5" color="white" sx={{ fontWeight: 800, mb: 3, letterSpacing: 1 }}>
+            <Typography variant="h5" sx={{ fontWeight: 800, mb: 3, letterSpacing: 1, color: 'white' }}>
               inspec
             </Typography>
             <Typography variant="body2" sx={{ mb: 3, lineHeight: 1.8, maxWidth: 300 }}>
@@ -103,7 +110,7 @@ const Footer = () => {
               <IconButton 
                 sx={{ 
                   color: 'white', 
-                  bgcolor: 'rgba(255,255,255,0.08)', 
+                  bgcolor: hoverColor, 
                   '&:hover': { bgcolor: '#43a047' } 
                 }}
               >
@@ -112,7 +119,7 @@ const Footer = () => {
               <IconButton 
                 sx={{ 
                   color: 'white', 
-                  bgcolor: 'rgba(255,255,255,0.08)', 
+                  bgcolor: hoverColor, 
                   '&:hover': { bgcolor: '#43a047' } 
                 }}
               >
@@ -123,7 +130,7 @@ const Footer = () => {
 
           {/* Section Expertises */}
           <Grid item xs={6} md={2}>
-            <Typography variant="subtitle1" color="white" sx={{ fontWeight: 700, mb: 3 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 3, color: 'white' }}>
               {t('footer.links_title')}
             </Typography>
             <Stack spacing={1.5}>
@@ -134,7 +141,7 @@ const Footer = () => {
                   to={item.path}
                   variant="caption" 
                   sx={{ 
-                    color: 'rgba(255,255,255,0.7)',
+                    color: textColor,
                     textDecoration: 'none',
                     cursor: 'pointer', 
                     transition: '0.2s', 
@@ -150,7 +157,7 @@ const Footer = () => {
 
           {/* Section Agences */}
           <Grid item xs={6} md={2}>
-            <Typography variant="subtitle1" color="white" sx={{ fontWeight: 700, mb: 3 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 3, color: 'white' }}>
               {t('footer.agencies_title')}
             </Typography>
             <Stack spacing={2}>
@@ -169,7 +176,7 @@ const Footer = () => {
 
           {/* Section Newsletter */}
           <Grid item xs={12} md={4}>
-            <Typography variant="subtitle1" color="white" sx={{ fontWeight: 700, mb: 3 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 3, color: 'white' }}>
               {t('footer.newsletter_title')}
             </Typography>
             <Typography variant="caption" sx={{ mb: 2, display: 'block', opacity: 0.8 }}>

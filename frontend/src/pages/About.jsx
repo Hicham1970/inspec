@@ -10,12 +10,27 @@ import {
 } from '@mui/material';
 import { ShieldCheck, Users, Award, MapPin } from 'lucide-react';
 import Seo from '../components/common/Seo';
+import { useThemeMode, THEMES } from '../ThemeContext';
 
 /**
  * Page À propos - Présentation d'INSPECTIS
  */
 export default function About() {
   const { t } = useTranslation();
+  const { mode } = useThemeMode();
+  const isDark = mode === THEMES.DARK;
+
+  // Theme-aware colors
+  const titleColor = isDark ? '#ffffff' : '#002a54';
+  const sectionBg = isDark ? '#121212' : '#ffffff';
+  const valuesSectionBg = isDark ? '#1e1e1e' : '#f8f9fa';
+  const paperBg = isDark ? '#2a2a2a' : '#ffffff';
+  const heroBg = isDark 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
+  const ctaBg = isDark 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
 
   const stats = [
     { value: '15+', label: t('about.stats_years') },
@@ -60,7 +75,7 @@ export default function About() {
         {/* Hero Section */}
         <Box sx={{ 
           position: 'relative',
-          background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+          background: heroBg,
           color: 'white',
           py: { xs: 8, md: 12 },
           overflow: 'hidden'
@@ -108,7 +123,7 @@ export default function About() {
         </Box>
 
         {/* Mission Section */}
-        <Box sx={{ py: { xs: 8, md: 12 } }}>
+        <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: sectionBg }}>
           <Container maxWidth="lg">
             <Grid container spacing={8} alignItems="center">
               <Grid item xs={12} md={6}>
@@ -124,13 +139,13 @@ export default function About() {
                 <Typography variant="overline" sx={{ color: '#43a047', letterSpacing: 2, fontWeight: 800 }}>
                   {t('about.mission_title')}
                 </Typography>
-                <Typography variant="h3" sx={{ color: '#002a54', fontWeight: 800, mb: 3, mt: 1 }}>
+                <Typography variant="h3" sx={{ color: titleColor, fontWeight: 800, mb: 3, mt: 1 }}>
                   {t('about.mission_subtitle')}
                 </Typography>
-                <Typography variant="body1" sx={{ mb: 3, lineHeight: 1.8, color: 'text.secondary' }}>
+                <Typography variant="body1" sx={{ mb: 3, lineHeight: 1.8, color: isDark ? '#b0b0b0' : 'text.secondary' }}>
                   {t('about.mission_text')}
                 </Typography>
-                <Typography variant="body1" sx={{ lineHeight: 1.8, color: 'text.secondary' }}>
+                <Typography variant="body1" sx={{ lineHeight: 1.8, color: isDark ? '#b0b0b0' : 'text.secondary' }}>
                   {t('about.mission_text2')}
                 </Typography>
               </Grid>
@@ -139,13 +154,13 @@ export default function About() {
         </Box>
 
         {/* Values Section */}
-        <Box sx={{ bgcolor: '#f8f9fa', py: { xs: 8, md: 12 } }}>
+        <Box sx={{ bgcolor: valuesSectionBg, py: { xs: 8, md: 12 } }}>
           <Container maxWidth="lg">
             <Box sx={{ textAlign: 'center', mb: 8 }}>
               <Typography variant="overline" sx={{ color: '#43a047', letterSpacing: 2, fontWeight: 800 }}>
                 {t('about.values_title')}
               </Typography>
-              <Typography variant="h3" sx={{ color: '#002a54', fontWeight: 800, mt: 1 }}>
+              <Typography variant="h3" sx={{ color: titleColor, fontWeight: 800, mt: 1 }}>
                 {t('about.values_subtitle')}
               </Typography>
             </Box>
@@ -157,6 +172,7 @@ export default function About() {
                     height: '100%', 
                     borderRadius: 3,
                     transition: '0.3s',
+                    bgcolor: paperBg,
                     '&:hover': { 
                       transform: 'translateY(-5px)',
                       boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
@@ -175,10 +191,10 @@ export default function About() {
                     }}>
                       <value.icon size={28} />
                     </Box>
-                    <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: '#002a54' }}>
+                    <Typography variant="h5" sx={{ fontWeight: 700, mb: 2, color: titleColor }}>
                       {value.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.7 }}>
+                    <Typography variant="body2" sx={{ color: isDark ? '#b0b0b0' : 'text.secondary', lineHeight: 1.7 }}>
                       {value.description}
                     </Typography>
                   </Paper>
@@ -190,7 +206,7 @@ export default function About() {
 
         {/* CTA Section */}
         <Box sx={{ 
-          background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+          background: ctaBg,
           py: { xs: 8, md: 10 },
           textAlign: 'center',
           color: 'white'

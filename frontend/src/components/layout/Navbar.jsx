@@ -20,7 +20,8 @@ import {
 import LanguageIcon from '@mui/icons-material/Language';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
+import { useThemeMode, THEMES } from '../../ThemeContext';
 
 /**
  * Language switcher integrated with i18next.
@@ -32,6 +33,7 @@ export default function Navbar() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
+  const { mode, toggleTheme } = useThemeMode();
 
   const navItems = [
     { path: '/', label: t('nav.home', 'Accueil') },
@@ -111,7 +113,22 @@ export default function Navbar() {
           )}
 
           {/* Right side */}
-          <Box display="flex" alignItems="center" gap={2}>
+          <Box display="flex" alignItems="center" gap={1}>
+            {/* Theme Toggle Button */}
+            <IconButton
+              onClick={toggleTheme}
+              sx={{ 
+                color: 'white',
+                bgcolor: 'rgba(255,255,255,0.1)',
+                '&:hover': {
+                  bgcolor: 'rgba(255,255,255,0.2)',
+                }
+              }}
+              title={mode === THEMES.LIGHT ? 'Mode sombre' : 'Mode clair'}
+            >
+              {mode === THEMES.LIGHT ? <Moon size={20} /> : <Sun size={20} />}
+            </IconButton>
+
             {/* Language selector */}
             <Select
               value={i18n.language}
@@ -163,7 +180,10 @@ export default function Navbar() {
           }
         }}
       >
-        <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end' }}>
+        <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <IconButton onClick={toggleTheme} sx={{ color: 'white' }}>
+            {mode === THEMES.LIGHT ? <Moon size={24} /> : <Sun size={24} />}
+          </IconButton>
           <IconButton onClick={() => setDrawerOpen(false)} sx={{ color: 'white' }}>
             <X />
           </IconButton>

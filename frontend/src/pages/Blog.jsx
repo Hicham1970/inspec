@@ -16,13 +16,28 @@ import {
 import { Calendar, ArrowRight, Ship, Anchor } from 'lucide-react';
 import Seo from '../components/common/Seo';
 import { articles, getArticlesByCategory } from '../data/articles';
+import { useThemeMode, THEMES } from '../ThemeContext';
 
 /**
  * Page Blog - Actualités maritimes d'inspec
  */
 export default function Blog() {
   const { t } = useTranslation();
+  const { mode } = useThemeMode();
+  const isDark = mode === THEMES.DARK;
   const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Theme-aware colors
+  const titleColor = isDark ? '#ffffff' : '#002a54';
+  const sectionBg = isDark ? '#121212' : '#ffffff';
+  const categoriesBg = isDark ? '#1e1e1e' : '#f8f9fa';
+  const cardBg = isDark ? '#2a2a2a' : '#ffffff';
+  const heroBg = isDark 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
+  const newsletterBg = isDark 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
 
   // Mapper les catégories traduites vers les catégories dans les données
   const categoryMap = {
@@ -57,7 +72,7 @@ export default function Blog() {
         {/* Hero Section */}
         <Box sx={{ 
           position: 'relative',
-          background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+          background: heroBg,
           color: 'white',
           py: { xs: 8, md: 12 },
           overflow: 'hidden'
@@ -85,11 +100,10 @@ export default function Blog() {
         </Box>
 
         {/* Categories */}
-        <Box sx={{ bgcolor: '#f8f9fa', py: 3, borderBottom: '1px solid #e0e0e0' }}>
+        <Box sx={{ bgcolor: categoriesBg, py: 3, borderBottom: isDark ? '1px solid #333' : '1px solid #e0e0e0' }}>
           <Container maxWidth="lg">
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
               {categories.map((category, index) => {
-                const isSelected = (categoryMap[category] || 'all') === (categoryMap[selectedCategory] || 'all') && index === categories.indexOf(categories.find(cat => categoryMap[cat] === (categoryMap[selectedCategory] || 'all')));
                 const isActive = categoryMap[category] === categoryMap[selectedCategory];
                 return (
                   <Chip 
@@ -97,13 +111,13 @@ export default function Blog() {
                     label={category}
                     onClick={() => setSelectedCategory(category)}
                     sx={{ 
-                      bgcolor: isActive ? '#43a047' : 'white',
-                      color: isActive ? 'white' : '#002a54',
+                      bgcolor: isActive ? '#43a047' : (isDark ? '#2a2a2a' : 'white'),
+                      color: isActive ? 'white' : (isDark ? '#ffffff' : '#002a54'),
                       fontWeight: 600,
                       cursor: 'pointer',
                       transition: '0.2s',
                       '&:hover': {
-                        bgcolor: isActive ? '#388e3c' : '#e8f5e9'
+                        bgcolor: isActive ? '#388e3c' : (isDark ? '#3a3a3a' : '#e8f5e9')
                       }
                     }}
                   />
@@ -114,7 +128,7 @@ export default function Blog() {
         </Box>
 
         {/* Articles Grid */}
-        <Box sx={{ py: { xs: 8, md: 12 } }}>
+        <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: sectionBg }}>
           <Container maxWidth="lg">
             <Grid container spacing={4}>
               {filteredArticles.map((article) => (
@@ -126,6 +140,7 @@ export default function Blog() {
                       overflow: 'hidden',
                       transition: '0.3s',
                       cursor: 'pointer',
+                      bgcolor: cardBg,
                       '&:hover': { 
                         transform: 'translateY(-8px)',
                         boxShadow: '0 20px 50px rgba(0,0,0,0.15)'
@@ -153,15 +168,15 @@ export default function Blog() {
                       </Box>
                       <CardContent sx={{ p: 3 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                          <Calendar size={14} sx={{ color: 'text.secondary' }} />
-                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                          <Calendar size={14} sx={{ color: isDark ? '#b0b0b0' : 'text.secondary' }} />
+                          <Typography variant="body2" sx={{ color: isDark ? '#b0b0b0' : 'text.secondary' }}>
                             {article.date}
                           </Typography>
                         </Box>
-                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: '#002a54', lineHeight: 1.3 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 2, color: titleColor, lineHeight: 1.3 }}>
                           {article.title}
                         </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2, lineHeight: 1.6 }}>
+                        <Typography variant="body2" sx={{ color: isDark ? '#b0b0b0' : 'text.secondary', mb: 2, lineHeight: 1.6 }}>
                           {article.excerpt}
                         </Typography>
                         <Box sx={{ 
@@ -184,13 +199,13 @@ export default function Blog() {
         </Box>
 
         {/* Newsletter Section */}
-        <Box sx={{ bgcolor: '#f8f9fa', py: { xs: 8, md: 10 } }}>
+        <Box sx={{ bgcolor: isDark ? '#1e1e1e' : '#f8f9fa', py: { xs: 8, md: 10 } }}>
           <Container maxWidth="md">
             <Paper sx={{ 
               p: { xs: 4, md: 6 }, 
               borderRadius: 4,
               textAlign: 'center',
-              background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+              background: newsletterBg,
               color: 'white'
             }}>
               <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>

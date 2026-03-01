@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Anchor } from 'lucide-react';
 import { Globe } from './Globe';
+import { useThemeMode, THEMES } from '../ThemeContext';
 
 /**
  * Section Hero principale - inspec
@@ -18,6 +19,16 @@ import { Globe } from './Globe';
  */
 const Hero = () => {
   const { t } = useTranslation();
+  const { mode } = useThemeMode();
+
+  // Theme-aware colors
+  const bgGradient = mode === THEMES.DARK 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
+  
+  const overlayGradient = mode === THEMES.DARK
+    ? 'linear-gradient(to right, rgba(26,26,46,0.95) 0%, rgba(26,26,46,0.4) 100%)'
+    : 'linear-gradient(to right, rgba(0,42,84,0.95) 0%, rgba(0,42,84,0.4) 100%)';
 
   return (
     <Box sx={{ 
@@ -26,7 +37,7 @@ const Hero = () => {
       display: 'flex',
       alignItems: 'center',
       overflow: 'hidden',
-      background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+      background: bgGradient,
     }}>
       {/* Globe Component */}
       <Box sx={{ 
@@ -109,7 +120,7 @@ const Hero = () => {
         left: 0,
         right: 0,
         bottom: 0,
-        background: 'linear-gradient(to right, rgba(0,42,84,0.95) 0%, rgba(0,42,84,0.4) 100%)',
+        background: overlayGradient,
         zIndex: 2
       }} />
 

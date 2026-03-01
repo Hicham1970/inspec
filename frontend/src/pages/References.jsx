@@ -14,12 +14,20 @@ import {
 import { Building2, Factory, Warehouse, CheckCircle, Ship } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
+import { useThemeMode, THEMES } from '../ThemeContext';
 
 /**
  * Page Références - Références clients d'inspec
  */
 export default function References() {
   const { t } = useTranslation();
+  const { mode } = useThemeMode();
+  const isDark = mode === THEMES.DARK;
+
+  // Theme-aware colors
+  const sectorsTitleColor = isDark ? '#ffffff' : '#002a054';
+  const testimonialNameColor = isDark ? '#ffffff' : '#002a54';
+  const testimonialBg = isDark ? '#1e1e1e' : '#f8f9fa';
 
   const sectors = [
     {
@@ -64,6 +72,19 @@ export default function References() {
     }
   ];
 
+  // Theme-aware backgrounds
+  const heroBg = isDark 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
+  
+  const sectorsSectionBg = isDark ? '#121212' : '#ffffff';
+  const testimonialsSectionBg = isDark ? '#1e1e1e' : '#f8f9fa';
+  const ctaBg = isDark 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
+  const cardBg = isDark ? '#2a2a2a' : '#ffffff';
+  const clientBoxBg = isDark ? '#2a2a2a' : '#f8f9fa';
+
   return (
     <>
       <Seo
@@ -77,7 +98,7 @@ export default function References() {
         {/* Hero Section */}
         <Box sx={{ 
           position: 'relative',
-          background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+          background: heroBg,
           color: 'white',
           py: { xs: 8, md: 12 },
           overflow: 'hidden'
@@ -125,13 +146,13 @@ export default function References() {
         </Box>
 
         {/* Sectors Section */}
-        <Box sx={{ py: { xs: 8, md: 12 } }}>
+        <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: sectorsSectionBg }}>
           <Container maxWidth="lg">
             <Box sx={{ textAlign: 'center', mb: 8 }}>
               <Typography variant="overline" sx={{ color: '#43a047', letterSpacing: 2, fontWeight: 800 }}>
                 {t('references.sectors_title')}
               </Typography>
-              <Typography variant="h3" sx={{ color: '#002a54', fontWeight: 800, mt: 1 }}>
+              <Typography variant="h3" sx={{ color: sectorsTitleColor, fontWeight: 800, mt: 1 }}>
                 {t('references.sectors_subtitle')}
               </Typography>
             </Box>
@@ -143,6 +164,7 @@ export default function References() {
                     borderRadius: 3,
                     overflow: 'hidden',
                     transition: '0.3s',
+                    bgcolor: cardBg,
                     '&:hover': { 
                       transform: 'translateY(-5px)',
                       boxShadow: '0 20px 50px rgba(0,0,0,0.15)'
@@ -170,12 +192,12 @@ export default function References() {
                             gap: 2,
                             p: 1.5,
                             borderRadius: 1,
-                            bgcolor: '#f8f9fa',
+                            bgcolor: clientBoxBg,
                             transition: '0.2s',
-                            '&:hover': { bgcolor: '#e8f5e9' }
+                            '&:hover': { bgcolor: isDark ? '#3a3a3a' : '#e8f5e9' }
                           }}>
-                            <CheckCircle size={18} sx={{ color: '#43a047' }} />
-                            <Typography variant="body2" sx={{ fontWeight: 600, color: '#002a54' }}>
+                            <CheckCircle size={18} sx={{ color: isDark ? '#66bb6a' : '#43a047' }} />
+                            <Typography variant="body2" sx={{ fontWeight: 600, color: isDark ? '#ffffff' : '#002a54' }}>
                               {client}
                             </Typography>
                           </Box>
@@ -190,13 +212,13 @@ export default function References() {
         </Box>
 
         {/* Testimonials Section */}
-        <Box sx={{ bgcolor: '#f8f9fa', py: { xs: 8, md: 12 } }}>
+        <Box sx={{ bgcolor: testimonialsSectionBg, py: { xs: 8, md: 12 } }}>
           <Container maxWidth="lg">
             <Box sx={{ textAlign: 'center', mb: 8 }}>
               <Typography variant="overline" sx={{ color: '#43a047', letterSpacing: 2, fontWeight: 800 }}>
                 {t('references.testimonials_title')}
               </Typography>
-              <Typography variant="h3" sx={{ color: '#002a54', fontWeight: 800, mt: 1 }}>
+              <Typography variant="h3" sx={{ color: sectorsTitleColor, fontWeight: 800, mt: 1 }}>
                 {t('references.testimonials_subtitle')}
               </Typography>
             </Box>
@@ -208,6 +230,7 @@ export default function References() {
                     borderRadius: 3,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                     transition: '0.3s',
+                    bgcolor: cardBg,
                     '&:hover': { 
                       transform: 'translateY(-5px)',
                       boxShadow: '0 10px 40px rgba(0,0,0,0.15)'
@@ -218,12 +241,12 @@ export default function References() {
                         mb: 3, 
                         lineHeight: 1.8, 
                         fontStyle: 'italic',
-                        color: 'text.secondary'
+                        color: isDark ? '#b0b0b0' : 'text.secondary'
                       }}>
                         "{testimonial.text}"
                       </Typography>
                       <Box>
-                        <Typography variant="h6" sx={{ fontWeight: 700, color: '#002a54' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700, color: testimonialNameColor }}>
                           {testimonial.name}
                         </Typography>
                         <Typography variant="body2" sx={{ color: '#43a047', fontWeight: 500 }}>
@@ -240,7 +263,7 @@ export default function References() {
 
         {/* CTA Section */}
         <Box sx={{ 
-          background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+          background: ctaBg,
           py: { xs: 8, md: 10 },
           textAlign: 'center',
           color: 'white'

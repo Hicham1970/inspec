@@ -20,12 +20,22 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Seo from '../components/common/Seo';
+import { useThemeMode, THEMES } from '../ThemeContext';
 
 /**
  * Page Services - Services d'inspection maritime d'inspec
  */
 export default function Services() {
   const { t } = useTranslation();
+  const { mode } = useThemeMode();
+  const isDark = mode === THEMES.DARK;
+
+  // Theme-aware colors
+  const sectionBg = isDark ? '#121212' : '#ffffff';
+  const titleColor = isDark ? '#ffffff' : '#002a54';
+  const textColor = isDark ? '#b0b0b0' : 'text.secondary';
+  const cardBg = isDark ? '#2a2a2a' : '#ffffff';
+  const stepNumberColor = isDark ? '#66bb6a' : '#43a047';
 
   const services = [
     {
@@ -80,6 +90,15 @@ export default function Services() {
     { step: '04', title: t('services.process_step4_title'), description: t('services.process_step4_desc') }
   ];
 
+  // Theme-aware backgrounds
+  const heroBg = isDark 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
+  const certificationsBg = isDark ? '#1a1a1a' : '#f8f9fa';
+  const ctaBg = isDark 
+    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+    : 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)';
+
   return (
     <>
       <Seo
@@ -93,7 +112,7 @@ export default function Services() {
         {/* Hero Section */}
         <Box sx={{ 
           position: 'relative',
-          background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+          background: heroBg,
           color: 'white',
           py: { xs: 8, md: 12 },
           overflow: 'hidden'
@@ -121,7 +140,7 @@ export default function Services() {
         </Box>
 
         {/* Services Grid */}
-        <Box sx={{ py: { xs: 8, md: 12 } }}>
+        <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: sectionBg }}>
           <Container maxWidth="lg">
             <Grid container spacing={4}>
               {services.map((service, index) => (
@@ -131,6 +150,7 @@ export default function Services() {
                     borderRadius: 3,
                     overflow: 'hidden',
                     transition: '0.3s',
+                    bgcolor: cardBg,
                     '&:hover': { 
                       transform: 'translateY(-8px)',
                       boxShadow: '0 20px 50px rgba(0,0,0,0.15)'
@@ -160,14 +180,14 @@ export default function Services() {
                       </Typography>
                     </Box>
                     <Box sx={{ p: 3 }}>
-                      <Typography variant="body2" sx={{ mb: 3, color: 'text.secondary', lineHeight: 1.7 }}>
+                      <Typography variant="body2" sx={{ mb: 3, color: textColor, lineHeight: 1.7 }}>
                         {service.description}
                       </Typography>
                       <Stack spacing={1}>
                         {service.features.map((feature, idx) => (
                           <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <CheckCircle size={16} sx={{ color: '#43a047' }} />
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            <Typography variant="body2" sx={{ fontWeight: 500, color: isDark ? '#ffffff' : '#002a54' }}>
                               {feature}
                             </Typography>
                           </Box>
@@ -182,13 +202,13 @@ export default function Services() {
         </Box>
 
         {/* Certifications Section */}
-        <Box sx={{ bgcolor: '#f8f9fa', py: { xs: 8, md: 10 } }}>
+        <Box sx={{ bgcolor: certificationsBg, py: { xs: 8, md: 10 } }}>
           <Container maxWidth="lg">
             <Box sx={{ textAlign: 'center', mb: 6 }}>
               <Typography variant="overline" sx={{ color: '#43a047', letterSpacing: 2, fontWeight: 800 }}>
                 {t('services.certifications_title')}
               </Typography>
-              <Typography variant="h3" sx={{ color: '#002a54', fontWeight: 800, mt: 1 }}>
+              <Typography variant="h3" sx={{ color: titleColor, fontWeight: 800, mt: 1 }}>
                 {t('services.certifications_subtitle')}
               </Typography>
             </Box>
@@ -199,15 +219,15 @@ export default function Services() {
                     p: 3, 
                     textAlign: 'center',
                     borderRadius: 2,
-                    bgcolor: 'white',
-                    border: '2px solid #e0e0e0',
+                    bgcolor: cardBg,
+                    border: isDark ? '2px solid #444' : '2px solid #e0e0e0',
                     transition: '0.3s',
                     '&:hover': {
                       borderColor: '#43a047',
-                      bgcolor: '#f0f9f0'
+                      bgcolor: isDark ? '#1a3a1a' : '#f0f9f0'
                     }
                   }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#002a54' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: titleColor }}>
                       {cert}
                     </Typography>
                   </Paper>
@@ -217,33 +237,43 @@ export default function Services() {
           </Container>
         </Box>
 
-        {/* Process Section */}
-        <Box sx={{ py: { xs: 8, md: 12 } }}>
+        {/* Process Section - Our Process */}
+        <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: sectionBg }}>
           <Container maxWidth="lg">
             <Box sx={{ textAlign: 'center', mb: 8 }}>
               <Typography variant="overline" sx={{ color: '#43a047', letterSpacing: 2, fontWeight: 800 }}>
                 {t('services.process_title')}
               </Typography>
-              <Typography variant="h3" sx={{ color: '#002a54', fontWeight: 800, mt: 1 }}>
+              <Typography variant="h3" sx={{ color: titleColor, fontWeight: 800, mt: 1 }}>
                 {t('services.process_subtitle')}
               </Typography>
             </Box>
             <Grid container spacing={4}>
               {processSteps.map((item, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
-                  <Box sx={{ textAlign: 'center' }}>
+                  <Box sx={{ 
+                    textAlign: 'center',
+                    p: 3,
+                    borderRadius: 3,
+                    bgcolor: cardBg,
+                    transition: '0.3s',
+                    '&:hover': {
+                      transform: 'translateY(-5px)',
+                      boxShadow: isDark ? 'none' : '0 10px 30px rgba(0,0,0,0.1)'
+                    }
+                  }}>
                     <Typography variant="h2" sx={{ 
                       fontWeight: 800, 
-                      color: '#43a047',
+                      color: stepNumberColor,
                       mb: 2,
                       fontSize: '3rem'
                     }}>
                       {item.step}
                     </Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, color: '#002a54' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, color: titleColor }}>
                       {item.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    <Typography variant="body2" sx={{ color: textColor }}>
                       {item.description}
                     </Typography>
                   </Box>
@@ -255,7 +285,7 @@ export default function Services() {
 
         {/* CTA Section */}
         <Box sx={{ 
-          background: 'linear-gradient(135deg, #002a54 0%, #004a8f 100%)',
+          background: ctaBg,
           py: { xs: 8, md: 10 },
           textAlign: 'center',
           color: 'white'
