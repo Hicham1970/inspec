@@ -13,7 +13,7 @@ const supabase = supabaseUrl && supabaseKey
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // Your notification email
-const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || 'contact@inspec.ma';
+const NOTIFICATION_EMAIL = process.env.EMAIL_TO || 'h.garoum@gmail.com';
 
 // Validation helper functions
 const sanitizeString = (str) => {
