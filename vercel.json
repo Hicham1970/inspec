@@ -17,13 +17,12 @@
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
-    },
+    }
+  ],
+  "rewrites": [
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/dist/$1"
+      "source": "/(.*)",
+      "destination": "/frontend/dist/$1"
     }
   ],
   "headers": [
