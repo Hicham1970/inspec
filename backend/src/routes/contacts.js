@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabase');
+const transporter = require('../config/nodemailer');
 
 // Validation helper functions
 const sanitizeString = (str) => {
@@ -84,7 +85,46 @@ router.post('/', async (req, res) => {
       return res.status(500).json({ error: error.message });
     }
 
-    const successMessage = type === 'quotation' 
+    // Envoi de l'email de notification via Resend
+    if (transporter) {
+      try {
+        const emailHtml = `
+          <h2>Nouveau message reçu via le site web INSPEC</h2>
+          
+          <h3>Détails du contact :</h3>
+          <ul>
+            <li><strong>Nom :</strong> ${sanitizedData.name}</li>
+            <li><strong>Email :</strong> ${sanitizedData.email}</li>
+            <li><strong>Téléphone :</strong> ${sanitizedData.phone || 'Non renseigné'}</li>
+            <li><strong>Entreprise :</strong> ${sanitizedData.company || 'Non renseigné'}</li>
+            <li><strong>Type :</strong> ${sanitizedData.type === 'quotation' ? 'Demande de devis' : 'Contact simple'}</li>
+          </ul>
+          
+          <h3>Message :</h3>
+          <p>${sanitizedData.message.replace(/\n/g, '<br>')}</p>
+        `;
+
+        const emailTo = process.env.EMAIL_TO || 'h.garoum@gmail.com';
+        console.log('📧 Envoi email à:', emailTo);
+        
+        const result = await transporter.emails.send({
+          from: 'INSPEC <onboarding@resend.dev>',
+          to: emailTo,
+          reply_to: sanitizedData.email,
+          subject: `[INSPEC] Nouveau message : ${sanitizedData.subject || 'Contact'}`,
+          html: emailHtml,
+        });
+        
+        console.log('✅ Email de notification envoyé avec succès:', result);
+      } catch (emailError) {
+        console.error('❌ Erreur lors de l\'envoi de l\'email:', emailError);
+        // On continue même si l'email échoue car les données sont sauvées en BDD
+      }
+    } else {
+      console.warn('⚠️  Transporter email non configuré - email non envoyé');
+    }
+
+    const successMessage = type === 'quotation'
       ? 'Demande de devis envoyée avec succès'
       : 'Message envoyé avec succès';
 
