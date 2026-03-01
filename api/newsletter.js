@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
 
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -7,6 +8,12 @@ const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = supabaseUrl && supabaseKey 
   ? createClient(supabaseUrl, supabaseKey)
   : null;
+
+// Initialize Resend
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+
+// Your notification email
+const NOTIFICATION_EMAIL = process.env.EMAIL_TO || 'h.garoum@gmail.com';
 
 export default async function handler(req, res) {
   // Set CORS headers
@@ -69,6 +76,47 @@ export default async function handler(req, res) {
       if (error) {
         console.error('Supabase error:', error);
         return res.status(500).json({ error: error.message });
+      }
+
+      // Send notification email if Resend is configured
+      if (resend) {
+        try {
+          const emailHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #002a54; border-bottom: 2px solid #002a54; padding-bottom: 10px;">
+                📧 Nouveau inscrit à la newsletter INSPEC
+              </h2>
+              
+              <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                <tr>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; width: 40%;">Email:</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee;">${email}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Date d'inscription:</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #eee;">${new Date().toLocaleString('fr-FR')}</td>
+                </tr>
+              </table>
+
+              <div style="margin-top: 30px; padding: 15px; background-color: #f5f5f5; border-radius: 5px;">
+                <p style="margin: 0; font-size: 12px; color: #666;">
+                  🌐 Site: INSPEC - Inspection Maritime & Certification
+                </p>
+              </div>
+            </div>
+          `;
+          
+          const emailResult = await resend.emails.send({
+            from: 'INSPEC Notifications <onboarding@resend.dev>',
+            to: [NOTIFICATION_EMAIL],
+            subject: '📧 Nouvelle inscription à la newsletter INSPEC',
+            html: emailHtml,
+          });
+
+          console.log('Newsletter notification email sent:', emailResult);
+        } catch (emailError) {
+          console.error('Error sending newsletter notification email:', emailError);
+        }
       }
 
       res.status(201).json({ 
