@@ -438,7 +438,7 @@ export default function Contact() {
                     loading="lazy"
                     allowFullScreen
                     referrerPolicy="no-referrer-when-downgrade"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3304.3!2d-7.6317!3d33.6083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d3a5c2a0c4b5%3A0x4c3c3c3c3c3c3c3c!2sMarina+Shopping+Center!5e0!3m2!1sfr!2sma!4v1635957842000!5m2!1sfr!2sma"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3304.07!2d-7.62967!3d33.60825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d3a5c2a0c4b5%3A0x8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8!2s143+Marina+Shopping+Center%2C+Casablanca%2C+Morocco!5e0!3m2!1sfr!2sma!4v1700000000000!5m2!1sfr!2sma"
                   />
                 </Paper>
               </Stack>
