@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabase');
+const transporter = require('../config/nodemailer');
 
 // POST /api/newsletter - S'inscrire à la newsletter
 router.post('/', async (req, res) => {
@@ -54,6 +55,38 @@ router.post('/', async (req, res) => {
     if (error) {
       console.error('Supabase error:', error);
       return res.status(500).json({ error: error.message });
+    }
+
+    // Envoi de l'email de notification via Resend
+    if (transporter) {
+      try {
+        const emailHtml = `
+          <h2>Nouveau inscrit à la newsletter INSPEC</h2>
+          
+          <h3>Nouvel abonné :</h3>
+          <ul>
+            <li><strong>Email :</strong> ${email}</li>
+            <li><strong>Date d'inscription :</strong> ${new Date().toLocaleString('fr-FR')}</li>
+          </ul>
+        `;
+
+        const emailTo = process.env.EMAIL_TO || 'h.garoum@gmail.com';
+        console.log('📧 Envoi email de newsletter à:', emailTo);
+        
+        const result = await transporter.emails.send({
+          from: 'INSPEC <onboarding@resend.dev>',
+          to: emailTo,
+          subject: '[INSPEC] Nouvelle inscription à la newsletter',
+          html: emailHtml,
+        });
+        
+        console.log('✅ Email de notification newsletter envoyé avec succès:', result);
+      } catch (emailError) {
+        console.error('❌ Erreur lors de l\'envoi de l\'email newsletter:', emailError);
+        // On continue même si l'email échoue car les données sont sauvées en BDD
+      }
+    } else {
+      console.warn('⚠️  Transporter email non configuré - email newsletter non envoyé');
     }
 
     res.status(201).json({ 

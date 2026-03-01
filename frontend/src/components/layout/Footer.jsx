@@ -87,6 +87,7 @@ const Footer = () => {
     { name: 'Casablanca', address: '123 Rue Mohammed V' },
     { name: 'Tanger', address: 'Avenue Mohammed VI' },
     { name: 'Agadir', address: 'Boulevard Hassan II' },
+    { name: 'Safi', address: ' Villa Bouzid N° 21 Boulevard Kenedy' },
   ];
 
   // Theme-aware colors
@@ -194,7 +195,14 @@ const Footer = () => {
                   bgcolor: 'white', 
                   borderRadius: 1, 
                   flexGrow: 1,
-                  '& .MuiOutlinedInput-root': { height: 40 }
+                  '& .MuiOutlinedInput-root': { height: 40 },
+                  '& .MuiOutlinedInput-input': { 
+                    color: '#000000',
+                    '&::placeholder': {
+                      color: '#666666',
+                      opacity: 1
+                    }
+                  }
                 }}
               />
               <Button 
