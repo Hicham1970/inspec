@@ -70,21 +70,43 @@ export default function Navbar() {
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between', maxWidth: 1400, width: '100%', mx: 'auto', px: { xs: 2, md: 3 } }}>
-          {/* Site title */}
-          <Typography
+          {/* Site title - Inspec7 Logo */}
+          <Box
             component={Link}
             to="/"
-            variant="h5"
             sx={{ 
-              color: 'white', 
               textDecoration: 'none',
-              fontWeight: 800,
-              letterSpacing: 1,
-              '&:hover': { color: '#43a047' }
+              display: 'flex',
+              alignItems: 'baseline',
+              '&:hover': { opacity: 0.9 }
             }}
           >
-            inspec
-          </Typography>
+            <Typography
+              variant="h5"
+              sx={{ 
+                color: 'white', 
+                fontWeight: 800,
+                letterSpacing: 1,
+                textTransform: 'lowercase'
+              }}
+            >
+              inspec
+            </Typography>
+            <Typography
+              variant="h5"
+              sx={{ 
+                color: '#43a047',
+                fontFamily: '"Playfair Display", serif',
+                fontWeight: 700,
+                fontStyle: 'italic',
+                fontSize: '2.8em',
+                lineHeight: 1,
+                marginLeft: '2px'
+              }}
+            >
+              7
+            </Typography>
+          </Box>
 
           {/* Desktop Navigation */}
           {!isMobile && (
