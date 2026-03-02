@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "builds": [
     {
       "src": "api/*.js",
@@ -11,24 +10,6 @@
       "config": {
         "distDir": "dist"
       }
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/newsletter",
-      "destination": "/api/newsletter.js"
-    },
-    {
-      "source": "/api/contact",
-      "destination": "/api/contact.js"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/((?!api).*)",
-      "destination": "/$1"
     }
   ],
   "headers": [
