@@ -60,6 +60,14 @@ const Footer = () => {
         body: JSON.stringify({ email: newsletterEmail }),
       });
 
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        // Not a JSON response - likely a 404 or error page
+        console.error('Newsletter error: Non-JSON response', response.status);
+        throw new Error('Service temporairement indisponible. Veuillez réessayer plus tard.');
+      }
+
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || 'Erreur lors de l\'inscription');
@@ -69,7 +77,16 @@ const Footer = () => {
       setNewsletterEmail('');
     } catch (error) {
       console.error('Newsletter error:', error);
-      setNewsletterMessage({ type: 'error', text: error.message || 'Erreur de connexion. Veuillez réessayer.' });
+      // Provide more helpful error message
+      let errorMessage = 'Erreur de connexion. Veuillez réessayer.';
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        errorMessage = 'Erreur de connexion. Vérifiez votre connexion internet.';
+      } else if (error.message.includes('500') || error.message.includes('502') || error.message.includes('503')) {
+        errorMessage = 'Service temporairement indisponible. Veuillez réessayer plus tard.';
+      } else {
+        errorMessage = error.message || errorMessage;
+      }
+      setNewsletterMessage({ type: 'error', text: errorMessage });
     } finally {
       setNewsletterLoading(false);
       setOpenSnackbar(true);
