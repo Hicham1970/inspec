@@ -52,7 +52,7 @@ const Footer = () => {
     setNewsletterMessage({ type: '', text: '' });
 
     try {
-      const response = await fetch('/api/newsletter', {
+      const response = await fetch('/api/newsletter-api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
