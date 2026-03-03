@@ -13,14 +13,20 @@
       }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "src": "/api/(.*)",
+      "dest": "/api/$1",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
     },
     {
-      "source": "/(.*)",
-      "destination": "/frontend/$1"
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/dist/$1"
     }
   ],
   "headers": [
