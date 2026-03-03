@@ -12,6 +12,20 @@
       }
     }
   ],
+  "rewrites": [
+    {
+      "source": "/api/newsletter",
+      "destination": "/api/newsletter.js"
+    },
+    {
+      "source": "/api/contact",
+      "destination": "/api/contact.js"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path.js"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
