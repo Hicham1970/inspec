@@ -1,7 +1,7 @@
 {
   "builds": [
     {
-      "src": "api/*.js",
+      "src": "frontend/src/pages/api/*.js",
       "use": "@vercel/node"
     },
     {
@@ -15,15 +15,15 @@
   "rewrites": [
     {
       "source": "/api/newsletter",
-      "destination": "/api/newsletter.js"
+      "destination": "/frontend/src/pages/api/newsletter.js"
     },
     {
       "source": "/api/contact",
-      "destination": "/api/contact.js"
+      "destination": "/frontend/src/pages/api/contact.js"
     },
     {
       "source": "/api/:path*",
-      "destination": "/api/:path.js"
+      "destination": "/frontend/src/pages/api/:path.js"
     }
   ],
   "headers": [
