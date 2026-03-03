@@ -3,50 +3,12 @@
     {
       "src": "frontend/src/pages/api/*.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/newsletter",
-      "destination": "/frontend/src/pages/api/newsletter.js"
-    },
-    {
-      "source": "/api/contact",
-      "destination": "/frontend/src/pages/api/contact.js"
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "/frontend/src/pages/api/:path.js"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
-      ]
+      "src": "/api/(.*)",
+      "dest": "frontend/src/pages/api/$1"
     }
   ]
 }
