@@ -45,3 +45,5 @@ temp/
 
 # Windows reserved filenames
 nul
+.vercel
+.env*.local

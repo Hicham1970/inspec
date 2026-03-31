@@ -1,22 +1,20 @@
 {
   "version": 2,
+  "functions": {
+    "api/test.js": {
+      "runtime": "@vercel/node@3"
+    },
+    "api/newsletter.js": {
+      "runtime": "@vercel/node@3"
+    },
+    "api/contact.js": {
+      "runtime": "@vercel/node@3"
+    },
+    "api/newsletter-api.js": {
+      "runtime": "@vercel/node@3"
+    }
+  },
   "builds": [
-    {
-      "src": "api/test.js",
-      "use": "@vercel/node@3"
-    },
-    {
-      "src": "api/newsletter.js",
-      "use": "@vercel/node@3"
-    },
-    {
-      "src": "api/contact.js",
-      "use": "@vercel/node@3"
-    },
-    {
-      "src": "api/newsletter-api.js",
-      "use": "@vercel/node@3"
-    },
     {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",

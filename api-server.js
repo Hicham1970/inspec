@@ -1,0 +1,2 @@
+import express from 'express';\nimport cors from 'cors';\nimport contactHandler from './contact.js';\nimport testHandler from './test.js';\n\nconst app = express();\napp.use(cors());\napp.use(express.json());\n\napp.get('/test', testHandler.default || testHandler);\napp.post('/contact', contactHandler.default || contactHandler);\n\napp.listen(3001, () => console.log('API test server: http://localhost:3001')); 
+
